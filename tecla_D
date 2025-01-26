@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include "pico/stdlib.h"
+#include "hardware/pio.h"
+#include "hardware/clocks.h"
+
+// Biblioteca gerada pelo arquivo .pio durante compilação.
+#include "ws2818b.pio.h"
+
+// Definição do número de LEDs e pino.
+#define LED_COUNT 25
+#define LED_PIN 7
+
+// Definição de pixel GRB
+typedef struct {
+    uint8_t G, R, B;
+} npLED_t;
+
+// Declaração do buffer de pixels que formam a matriz.
+npLED_t leds[LED_COUNT];
+
+// Variáveis para uso da máquina PIO.
+PIO np_pio;
+uint sm;
