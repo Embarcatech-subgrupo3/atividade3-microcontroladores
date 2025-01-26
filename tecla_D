@@ -12,7 +12,7 @@
 
 // Definição de pixel GRB
 typedef struct {
-    uint8_t G, R, B;
+    uint8_t G, R, B; // Valores de cor para o LED
 } npLED_t;
 
 // Declaração do buffer de pixels que formam a matriz.
@@ -34,3 +34,29 @@ void npInit(uint pin) {
         leds[i].B = 0;
     }
 }
+
+// Função para atribuir uma cor RGB a um LED específico
+void npSetLED(const uint index, const uint8_t r, const uint8_t g, const uint8_t b) {
+    leds[index].R = r;
+    leds[index].G = g;
+    leds[index].B = b;
+}
+
+// Função para apagar todos os LEDs
+void npClear() {
+    for (uint i = 0; i < LED_COUNT; ++i) {
+        npSetLED(i, 0, 0, 0);
+    }
+    npWrite();
+}
+
+// Função para escrever os dados no buffer dos LEDs
+void npWrite() {
+    for (uint i = 0; i < LED_COUNT; ++i) {
+        pio_sm_put_blocking(np_pio, sm, leds[i].G);
+        pio_sm_put_blocking(np_pio, sm, leds[i].R);
+        pio_sm_put_blocking(np_pio, sm, leds[i].B);
+    }
+    sleep_us(100); // Sinal de RESET
+}
+
