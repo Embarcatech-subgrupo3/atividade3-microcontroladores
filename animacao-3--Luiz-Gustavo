@@ -40,3 +40,13 @@ void npInit(uint pin) {
     gpio_init(BUZZER_PIN);
     gpio_set_dir(BUZZER_PIN, GPIO_OUT);
 }
+
+// Função para atualizar os LEDs
+void npWrite() {
+    for (uint i = 0; i < LED_COUNT; i++) {
+        pio_sm_put_blocking(np_pio, sm, leds[i].G);
+        pio_sm_put_blocking(np_pio, sm, leds[i].R);
+        pio_sm_put_blocking(np_pio, sm, leds[i].B);
+    }
+    sleep_us(100);
+}
