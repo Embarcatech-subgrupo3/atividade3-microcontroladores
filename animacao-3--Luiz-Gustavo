@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include "pico/stdlib.h"
+#include "hardware/pio.h"
+#include "hardware/clocks.h"
+#include "ws2818b.pio.h"
+
+// Definição do número de LEDs e pino.
+#define LED_COUNT 25
+#define LED_PIN 7
+#define BUZZER_PIN 21  // Pino para o buzzer
+
+// Estrutura para representar um pixel RGB
+struct pixel_t {
+    uint8_t R, G, B;
+};
+typedef struct pixel_t pixel_t;
+pixel_t leds[LED_COUNT];
+
+PIO np_pio;
+uint sm;
+
+// Função para inicializar a matriz de LEDs
+void npInit(uint pin);
