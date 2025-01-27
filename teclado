@@ -1,0 +1,17 @@
+#include <stdio.h>
+#include "pico/stdlib.h"
+#include "hardware/pio.h"
+#include "ws2818b.pio.h"
+
+// Configurações da Matriz de LEDs
+#define LED_COUNT 25
+#define LED_PIN 7
+
+struct pixel_t {
+    uint8_t R, G, B;
+};
+typedef struct pixel_t pixel_t;
+
+pixel_t leds[LED_COUNT];
+PIO np_pio;
+uint sm;
