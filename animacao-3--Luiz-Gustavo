@@ -50,3 +50,35 @@ void npWrite() {
     }
     sleep_us(100);
 }
+
+// Função para tocar uma nota musical no buzzer
+void playTone(uint frequency, uint duration) {
+    if (frequency == 0) {
+        sleep_ms(duration);
+        return;
+    }
+    uint period = 1000000 / frequency;
+    uint halfPeriod = period / 2;
+    for (uint i = 0; i < (duration * 1000) / period; i++) {
+        gpio_put(BUZZER_PIN, 1);
+        sleep_us(halfPeriod);
+        gpio_put(BUZZER_PIN, 0);
+        sleep_us(halfPeriod);
+    }
+}
+
+// Função para acender os LEDs de acordo com o frame, tocando uma nota a cada LED aceso
+void npDisplayFrameWithSound(const uint8_t frame[5][5][3], int* melodyIndex) {
+    int index = 0;
+    for (uint i = 0; i < 5; i++) {
+        for (uint j = 0; j < 5; j++) {
+            leds[index].R = frame[i][j][0];
+            leds[index].G = frame[i][j][1];
+            leds[index].B = frame[i][j][2];
+            playTone(melody[*melodyIndex], noteDurations[*melodyIndex] * 100);
+            (*melodyIndex)++;
+            npWrite();
+            index++;
+        }
+    }
+}
