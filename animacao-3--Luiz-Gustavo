@@ -82,3 +82,23 @@ void npDisplayFrameWithSound(const uint8_t frame[5][5][3], int* melodyIndex) {
         }
     }
 }
+
+// Função para tocar a animação com som
+void npPlayAnimation() {
+    int melodyIndex = 0;
+    for (uint frame = 0; frame < FRAME_COUNT; frame++) {
+        npDisplayFrameWithSound(image[frame], &melodyIndex);
+        sleep_ms(500);  // Tempo entre frames
+    }
+}
+
+int main() {
+    stdio_init_all();
+    npInit(LED_PIN);
+
+    while (true) {
+        npPlayAnimation();
+        sleep_ms(2000);  // Pausa entre animações
+    }
+}
+
