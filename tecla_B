@@ -91,3 +91,33 @@ char getKey() {
   }
   return 0; // Nenhuma tecla pressionada
 }
+
+int main() {
+  stdio_init_all();
+
+  // Configura os pinos das linhas e colunas do teclado
+  for (int i = 0; i < 4; i++) {
+    gpio_init(ROWS[i]);
+    gpio_set_dir(ROWS[i], GPIO_OUT);
+    gpio_put(ROWS[i], 1); // Inicializa as linhas como HIGH
+
+    gpio_init(COLS[i]);
+    gpio_set_dir(COLS[i], GPIO_IN);
+    gpio_pull_up(COLS[i]); // Ativa o pull-up nas colunas
+  }
+
+  // Inicializa a matriz de LEDs
+  npInit(LED_PIN);
+
+  while (true) {
+    char key = getKey(); // Lê a tecla pressionada
+
+    if (key == 'B') {
+      npSetBlue100(); // Liga todos os LEDs na cor azul com 100% de intensidade
+    }
+
+    sleep_ms(100); // Delay para evitar leituras rápidas demais
+  }
+
+  return 0;
+}
