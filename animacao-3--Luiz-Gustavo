@@ -21,3 +21,22 @@ uint sm;
 
 // Função para inicializar a matriz de LEDs
 void npInit(uint pin);
+
+// Função para inicializar a matriz de LEDs
+void npInit(uint pin) {
+    uint offset = pio_add_program(pio0, &ws2818b_program);
+    np_pio = pio0;
+    sm = pio_claim_unused_sm(np_pio, false);
+    if (sm < 0) {
+        np_pio = pio1;
+        sm = pio_claim_unused_sm(np_pio, true);
+    }
+    ws2818b_program_init(np_pio, sm, offset, pin, 800000.f);
+    for (uint i = 0; i < LED_COUNT; i++) {
+        leds[i].R = 0;
+        leds[i].G = 0;
+        leds[i].B = 0;
+    }
+    gpio_init(BUZZER_PIN);
+    gpio_set_dir(BUZZER_PIN, GPIO_OUT);
+}
