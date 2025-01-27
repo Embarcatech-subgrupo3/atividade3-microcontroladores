@@ -92,6 +92,15 @@ char getKey() {
   return 0; // Nenhuma tecla pressionada
 }
 
+// Função para acender todos os LEDs na cor azul com 100% de intensidade
+void npSetBlue100() {
+  for (uint i = 0; i < LED_COUNT; ++i) {
+    npSetLED(i, 0, 0, 255); // Azul com 100% de intensidade
+  }
+  npWrite(); // Atualiza os LEDs
+}
+
+
 int main() {
   stdio_init_all();
 
