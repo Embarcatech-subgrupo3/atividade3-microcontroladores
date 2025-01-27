@@ -18,8 +18,8 @@
 
 
 // Pinos das linhas e colunas do teclado matricial
-int linhas[4] = {16, 17, 18, 19}; // Pinos das linhas
-int coluns[4] = {20, 8, 9, 28};   // Pinos das colunas
+int linhas[4] = {18, 19, 20, 4}; // Pinos das linhas
+int coluns[4] = {16, 17, 9, 8};   // Pinos das colunas
 
 
 // Mapeamento de teclas para o teclado matricial
@@ -200,7 +200,7 @@ void animacao1() {
 void padrao(char tecla) {
     desliga();
     switch (tecla) {
-        case '3':
+        case '2':
             printf("Animação de varredura \n"); //So para controle
             animacao1();
             break;
@@ -219,7 +219,7 @@ int main() {
     npInit(MATRIZ_LEDS);
     ativar_buzzer(); 
 
-    printf("Aperte a tecla 3!\n"); //So para controle
+    printf("Aperte a tecla 2!\n"); //So para controle
 
     while (true) {
         char tecla = ler_tecla(); // Lê a tecla pressionada
