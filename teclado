@@ -79,3 +79,50 @@ char getKey() {
     }
     return 0;
 }
+
+// Função para limpar o buffer de LEDs
+void npClear() {
+  for (uint i = 0; i < LED_COUNT; ++i)
+    npSetLED(i, 0, 0, 0);
+}
+
+int main() {
+    stdio_init_all();
+    npInit(LED_PIN);
+    initKeypad();
+
+    while (true) {
+        char key = getKey(); // Lê a tecla pressionada
+        if (key) {
+            printf("Tecla pressionada: %c\n", key);
+            
+            // Limpa todos os LEDs antes de aplicar a nova configuração
+            npClear();
+
+            // Processa a tecla pressionada com if e else if
+            if (key == 'A') {
+                npSetLED(0, 255, 0, 0); // Exemplo: LED 0 em vermelho
+            } 
+            else if (key == 'B') {
+                npSetLED(1, 0, 255, 0); // Exemplo: LED 1 em verde
+            } 
+            else if (key == 'C') {
+                npSetLED(2, 0, 0, 255); // Exemplo: LED 2 em azul
+            } 
+            else if (key == 'D') {
+                npSetLED(3, 255, 255, 0); // Exemplo: LED 3 em amarelo
+            } 
+            else {
+                npClear(); // Garante que os LEDs sejam apagados
+            }
+
+            // Atualiza a matriz de LEDs
+            npWrite();
+        }
+
+        // Pequeno delay para evitar leituras rápidas demais
+        sleep_ms(100);
+    }
+
+    return 0;
+}
