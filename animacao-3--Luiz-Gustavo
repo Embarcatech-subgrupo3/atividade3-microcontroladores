@@ -174,6 +174,18 @@ uint sm;
 // Função para inicializar a matriz de LEDs
 void npInit(uint pin);
 
+// Função para definir a cor de um LED
+void npSetLED(uint index, uint8_t r, uint8_t g, uint8_t b);
+// Função para atualizar os LEDs
+void npWrite();
+// Função para acender os LEDs de acordo com o frame, tocando uma nota a cada LED aceso
+// Declaração correta da função
+void npDisplayFrameWithSound(const uint8_t frame[FRAME_HEIGHT][FRAME_WIDTH][3], int* melodyIndex);
+// Função para tocar uma nota musical no buzzer
+void playTone(uint frequency, uint duration);
+// Função para tocar a animação com som
+void npPlayAnimation();
+
 // Função para inicializar a matriz de LEDs
 void npInit(uint pin) {
     uint offset = pio_add_program(pio0, &ws2818b_program);
@@ -204,20 +216,21 @@ void npWrite() {
 }
 
 // Função para tocar uma nota musical no buzzer
+#define TEMPO_BASE 250000  // Duração da semínima em ms 
+
 void playTone(uint frequency, uint duration) {
-    if (frequency == 0) {
-        sleep_ms(duration);
-        return;
-    }
-    uint period = 1000000 / frequency;
-    uint halfPeriod = period / 2;
-    for (uint i = 0; i < (duration * 1000) / period; i++) {
-        gpio_put(BUZZER_PIN, 1);
-        sleep_us(halfPeriod);
-        gpio_put(BUZZER_PIN, 0);
-        sleep_us(halfPeriod);
+    uint Duration = TEMPO_BASE / duration;  // Calcula a duração real da nota
+    uint delay = 400000 / frequency;           // Calcula o tempo de delay baseado na frequência
+    uint cycles = frequency * Duration / 900;  // Número de ciclos para a duração em ms
+
+    for (uint i = 0; i < cycles; i++) {
+        gpio_put(BUZZER_PIN, 1);  // Liga o buzzer
+        sleep_us(delay);
+        gpio_put(BUZZER_PIN, 0);  // Desliga o buzzer
+        sleep_us(delay);
     }
 }
+
 
 // Função para acender os LEDs de acordo com o frame, tocando uma nota a cada LED aceso
 void npDisplayFrameWithSound(const uint8_t frame[5][5][3], int* melodyIndex) {
@@ -240,17 +253,84 @@ void npPlayAnimation() {
     int melodyIndex = 0;
     for (uint frame = 0; frame < FRAME_COUNT; frame++) {
         npDisplayFrameWithSound(image[frame], &melodyIndex);
-        sleep_ms(500);  // Tempo entre frames
+        sleep_ms(200);  // Tempo entre frames
     }
+}
+
+typedef pixel_t npLED_t; // Mudança de nome de "struct pixel_t" para "npLED_t" por clareza.
+
+// Declaração do buffer de pixels que formam a matriz.
+npLED_t leds[LED_COUNT];
+
+// Variáveis para uso da máquina PIO.
+PIO np_pio;
+uint sm;
+
+// Definição dos pinos do teclado matricial
+const uint8_t ROWS[] = {18, 19, 20, 4};  // Linhas (GPIO 18, 19, 20,4)
+const uint8_t COLS[] = {16, 17, 9, 8}; // Colunas (GPIO 16, 17, 9, 8)
+
+// Mapeamento das teclas do teclado 4x4
+char keys[4][4] = {
+    {'1', '2', '3', 'A'},
+    {'4', '5', '6', 'B'},
+    {'7', '8', '9', 'C'},
+    {'*', '0', '#', 'D'}
+};
+
+// Função para atribuir uma cor RGB a um LED específico
+void npSetLED(const uint index, const uint8_t r, const uint8_t g, const uint8_t b) {
+  leds[index].R = r;
+  leds[index].G = g;
+  leds[index].B = b;
+}
+// Função para ler a tecla pressionada no teclado matricial
+char getKey() {
+  for (int row = 0; row < 4; row++) {
+    gpio_put(ROWS[row], 0); // Define a linha como LOW
+    for (int col = 0; col < 4; col++) {
+      if (!gpio_get(COLS[col])) {
+        // Espera até que a tecla seja liberada
+        while (!gpio_get(COLS[col])) {}
+        return keys[row][col]; // Retorna a tecla pressionada
+      }
+    }
+    gpio_put(ROWS[row], 1); // Define a linha como HIGH
+  }
+  return 0; // Nenhuma tecla pressionada
 }
 
 int main() {
-    stdio_init_all();
-    npInit(LED_PIN);
+  stdio_init_all();
 
-    while (true) {
-        npPlayAnimation();
-        sleep_ms(2000);  // Pausa entre animações
+  // Configura os pinos das linhas e colunas do teclado
+  for (int i = 0; i < 4; i++) {
+    gpio_init(ROWS[i]);
+    gpio_set_dir(ROWS[i], GPIO_OUT);
+    gpio_put(ROWS[i], 1); // Inicializa as linhas como HIGH
+
+    gpio_init(COLS[i]);
+    gpio_set_dir(COLS[i], GPIO_IN);
+    gpio_pull_up(COLS[i]); // Ativa o pull-up nas colunas
+  }
+
+  // Configura o pino do buzzer
+  gpio_init(BUZZER_PIN);
+  gpio_set_dir(BUZZER_PIN, GPIO_OUT);
+  gpio_put(BUZZER_PIN, 0); // Inicializa o buzzer desligado
+
+  // Inicializa a matriz de LEDs
+  npInit(LED_PIN);
+
+  while (true) {
+    char key = getKey(); // Lê a tecla pressionada
+
+    if (key == '3') {
+      npPlayAnimation();
     }
-}
 
+    sleep_ms(100); // Delay para evitar leituras rápidas demais
+  }
+
+  return 0;
+}
