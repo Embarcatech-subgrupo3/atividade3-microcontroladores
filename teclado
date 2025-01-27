@@ -24,3 +24,29 @@ char keys[4][4] = {
     {'7', '8', '9', 'C'},
     {'*', '0', '#', 'D'}
 };
+
+// Funções da Matriz de LEDs
+void npInit(uint pin) {
+    uint offset = pio_add_program(pio0, &ws2818b_program);
+    np_pio = pio0;
+    sm = pio_claim_unused_sm(np_pio, false);
+    ws2818b_program_init(np_pio, sm, offset, pin, 800000.f);
+    for (uint i = 0; i < LED_COUNT; i++) {
+        leds[i].R = leds[i].G = leds[i].B = 0;
+    }
+}
+
+void npSetLED(uint index, uint8_t r, uint8_t g, uint8_t b) {
+    leds[index].R = r;
+    leds[index].G = g;
+    leds[index].B = b;
+}
+
+void npWrite() {
+    for (uint i = 0; i < LED_COUNT; i++) {
+        pio_sm_put_blocking(np_pio, sm, leds[i].G);
+        pio_sm_put_blocking(np_pio, sm, leds[i].R);
+        pio_sm_put_blocking(np_pio, sm, leds[i].B);
+    }
+    sleep_us(100);
+}
