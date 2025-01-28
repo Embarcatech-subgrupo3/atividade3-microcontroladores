@@ -45,8 +45,23 @@ Líder: Luiz Gustavo do Valle Vieira
 Desenvolvedores:<br>
 Lana Ramos Gomes<br>
 Matheus Félix Dias<br>
+Miquele GomesNogueira Santana<br>
 Paulo Henrique de Farias Martins<br>
 Douglas Ramos de Almeida<br>
 
 ## **Instruções de Uso**  
+
+### **1. Importar o projeto**
+ - . Abra o vscode ou outro editor de código compatível 
+ - . verifique se tem instalado a extensão Raspberry pi pico
+ - . Clone este repositório, e importe os arquivos para o editor
+
+### **2. compilar o projeto**
+ - . Verifique se todas as dependências do projeto estão configuradas corretamente.
+ - . Compile o projeto para gerar a build, configurando o ambiente de acordo com a Raspberry Pi Pico.
+
+### **3. Executar a simulação**
+ - . Utiliza a extensão Wokwi e abra o arquivo diagrama.json.
+ - . Inicie a simulação para visualizar a funcionalidade do circuito e a funcionalidade do programa.
+
 
