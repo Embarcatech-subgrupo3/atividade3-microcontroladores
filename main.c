@@ -5,6 +5,7 @@
 #include "led_matrix_limpar.h"
 #include "ws2818b.pio.h"
 #include "teclado.h"
+#include "exibir_animação.h"
 // Buffer de LEDs e variáveis PIO
 npLED_t leds[LED_COUNT];
 PIO np_pio;
@@ -77,6 +78,7 @@ void drawHeart()
 
 int main()
 {
+    char modo = "L"; // "S" para Serial, "T" para Teclado Matricial
     // Inicializa entradas e saídas.
     stdio_init_all();
 
@@ -93,7 +95,12 @@ int main()
 
     while (true)
     {
-        char key = getKey(); // Lê a tecla pressionada
+        char key[1];
+        if(modo == "T"){
+            key[0] = getKey();
+        } else if(modo == "S") {
+            key[0] = getchar_timeout_us(10000); // Lê a tecla pressionada a partir da entrada serial
+        }
         if (key)
         {
             printf("Tecla pressionada: %c\n", key);
@@ -104,9 +111,10 @@ int main()
                 printf("Desligando todas os leds da matriz\n");
                 LimparLEDMatrix();
             }
-            else if (key == 'B')
+            else if (key == '1')
             {
                 printf("...\n");
+                playAnimation();
             }
         }
     }
