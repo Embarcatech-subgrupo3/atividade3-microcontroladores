@@ -67,7 +67,15 @@ void tecla_B()
     }
     npWrite(); // Atualiza os LEDs
 }
-
+// Tecla C: Liga todos os LEDs na cor vermelha com 80% de intensidade
+void tecla_C()
+{
+    for (uint i = 0; i < LED_COUNT; ++i)
+    {
+        npSetLED(i, 204, 0, 0); // Vermelho com 80% de intensidade
+    }
+    npWrite(); // Atualiza os LEDs
+}
 void tecla_D()
 {
     for (uint i = 0; i < LED_COUNT; ++i)
@@ -75,6 +83,13 @@ void tecla_D()
         npSetLED(i, 0, 128, 0); // Verde com 50% de intensidade
     }
     npWrite(); // Atualiza os LEDs
+}
+// tecla #
+void tecla_especial_1(){
+                for (uint i = 0; i < LED_COUNT; ++i) {
+                npSetLED(i, 51, 51, 51); // Ligar todos os LEDs na cor branca com 20% de intensidade
+            }
+            npWrite();
 }
 
 int getIndex(int x, int y)
@@ -86,18 +101,6 @@ int getIndex(int x, int y)
     else
     {
         return y * 5 + (4 - x);
-    }
-}
-
-void drawHeart()
-{
-    int heart[10][2] = {
-        {1, 4}, {3, 4}, {0, 3}, {2, 3}, {4, 3}, {0, 2}, {4, 2}, {1, 1}, {3, 1}, {2, 0}};
-
-    for (int i = 0; i < 10; i++)
-    {
-        int index = getIndex(heart[i][0], heart[i][1]);
-        npSetLED(index, 50, 0, 0);
     }
 }
 
@@ -132,19 +135,23 @@ int main()
                 printf("Ligando todos os leds em azul com 100%% de intensidade\n");
                 tecla_B();
             }
+            else if (key == 'C')
+            {
+                printf("Ligando todos os leds em vermelho com 80%% de intensidade\n");
+                tecla_C();
+            }
             else if (key == 'D')
             {
                 printf("Ligando todos os leds em verde com 50%% de intensidade\n");
                 tecla_D();
             }
+            else if (key == '#')
+            {
+                printf("Ligando todos os leds em branco com 20%% de intensidade\n");
+                tecla_especial_1();
+            }
             else if (key >= '1' && key <= '9') // Garante que o caractere está entre '1' e '9'
             {
-                if (key == '4') { // Se a tecla 4 for pressionada
-                    printf("Executando animação e música simultaneamente\n");
-                    
-                    // multicore_launch_core1(core1_entry); // Inicia a música no Core 1
-
-                }
                 int animacao = key - '0'; // Converte o caractere para o número correspondente
                 printf("Exibindo a animação %d\n", animacao);
                 playAnimation(animacao); // Passa o número como parâmetro para a função
