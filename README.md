@@ -37,7 +37,16 @@ O sistema responde às entradas do teclado matricial, gerando animações ou con
 
 - **Hardware**:  
   - Raspberry Pi Pico W.  
-  - Conexões para o teclado matricial e matriz de LEDs.  
+  - Conexões para o teclado matricial e matriz de LEDs.
+ 
+    Estrutura da equipe
+Líder: Luiz Gustavo do Valle Vieira
+
+Desenvolvedores:
+Lana Ramos Gomes
+Matheus Félix Dias
+Paulo Henrique de Farias Martins
+Douglas Ramos de Almeida
 
 ## **Instruções de Uso**  
 
