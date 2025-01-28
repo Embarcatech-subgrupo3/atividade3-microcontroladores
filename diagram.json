@@ -53,13 +53,6 @@
     },
     {
       "type": "wokwi-resistor",
-      "id": "r1",
-      "top": 90.35,
-      "left": -19.2,
-      "attrs": { "value": "1000" }
-    },
-    {
-      "type": "wokwi-resistor",
       "id": "r2",
       "top": 167.15,
       "left": 278.4,
@@ -193,10 +186,9 @@
     [ "pico:GP4", "keypad1:R4", "green", [ "h-48", "v-153.6", "h67.4" ] ],
     [ "pico:GP8", "keypad1:C4", "green", [ "h-28.8", "v-192", "h86.7" ] ],
     [ "pico:GP9", "keypad1:C3", "green", [ "h-19.2", "v-240", "h67.35" ] ],
-    [ "r1:1", "rgb1:DIN", "black", [ "v0" ] ],
     [ "pico:GND.5", "r2:1", "black", [ "h0" ] ],
     [ "r2:2", "bz1:1", "black", [ "h85.2", "v-124.8" ] ],
-    [ "pico:GP7", "r1:2", "black", [ "h0" ] ]
+    [ "pico:GP7", "rgb1:DIN", "green", [ "h0" ] ]
   ],
   "dependencies": {}
 }
