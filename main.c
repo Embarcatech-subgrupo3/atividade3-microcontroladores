@@ -6,6 +6,7 @@
 #include "ws2818b.pio.h"
 #include "teclado.h"
 #include "exibir_animação.h"
+
 // Buffer de LEDs e variáveis PIO
 npLED_t leds[LED_COUNT];
 PIO np_pio;
@@ -51,6 +52,22 @@ void npWrite()
         pio_sm_put_blocking(np_pio, sm, leds[i].B);
     }
 }
+void tecla_B() {
+  for (uint i = 0; i < LED_COUNT; ++i) {
+    npSetLED(i, 0, 0, 255); // Azul com 100% de intensidade
+  }
+  npWrite(); // Atualiza os LEDs
+}
+
+void tecla_D() {
+for (uint i = 0; i < LED_COUNT; ++i) {
+                npSetLED(i, 0, 128, 0); // Verde com 50% de intensidade
+            }
+  npWrite(); // Atualiza os LEDs
+}
+
+
+
 
 int getIndex(int x, int y)
 { // função para obter o index do LED, convertendo a linha e coluna.
@@ -72,7 +89,7 @@ void drawHeart()
     for (int i = 0; i < 10; i++)
     {
         int index = getIndex(heart[i][0], heart[i][1]);
-        npSetLED(index, 255, 0, 0);
+        npSetLED(index, 50, 0, 0);
     }
 }
 
@@ -85,7 +102,6 @@ int main()
     npInit(LED_PIN);
     // inicializa o teclado
     initKeypad();
-
     // Desenha o coração
     drawHeart();
 
@@ -94,24 +110,33 @@ int main()
 
     while (true)
     {
-        char key = getKey();
-       // getchar_timeout_us(10000); // Lê a tecla pressionada a partir da entrada serial
-       // getKey(); // Lê a tecla pressionada a partir do teclado matricial
+        int key = getKey();
+        // getchar_timeout_us(10000); // Lê a tecla pressionada a partir da entrada serial
+        // getKey(); // Lê a tecla pressionada a partir do teclado matricial
         if (key)
         {
-            printf("Tecla pressionada: %c\n", key);
 
             if (key == 'A')
             {
                 // Chama a função para limpar a matriz de LEDs
                 printf("Desligando todas os leds da matriz\n");
                 LimparLEDMatrix();
-            }
-            else if (key == '1')
+            }else if (key == 'B')
             {
-                printf("...\n");
-                playAnimation();
+                printf("Ligando todos os leds em azul com 100%% de intensidade\n");
+                tecla_B();
             }
+            else if (key == 'D')
+            {
+                printf("Ligando todos os leds em verde com 50%% de intensidade\n");
+                tecla_D();
+            }
+            else if (key >= '1' && key <= '9') // Garante que o caractere está entre '1' e '9'
+    {
+        int animacao = key - '0'; // Converte o caractere para o número correspondente
+        printf("Exibindo a animação %d\n", animacao);
+        playAnimation(animacao); // Passa o número como parâmetro para a função
+    }
         }
     }
 

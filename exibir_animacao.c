@@ -26,11 +26,27 @@ void displayFrame(const uint32_t *frame)
 }
 
 // Reproduz a animação completa
-void playAnimation()
+
+void playAnimation(int nAnimacao)
 {
-    for (int frame = 0; frame < FRAME_COUNT; ++frame)
+    switch (nAnimacao)
     {
-        displayFrame(cobrinha[frame]); // Exibe o frame atual
+    case 1:
+    for (int frame = 0; frame < FRAME_COUNT_1; ++frame)
+    {
+        displayFrame(animacao_1[frame]); // Exibe o frame atual
         sleep_ms(1000);                // Pausa entre frames
+    }
+        break;
+    case 2:
+        for (int frame = 0; frame < FRAME_COUNT_2; ++frame)
+        {
+            displayFrame(animacao_2[frame]); // Exibe o frame da animação 2
+            sleep_ms(1000);                      // Pausa entre os frames
+        }
+        break;
+    default:
+        printf("Animação inválida: %d\n", nAnimacao);
+        break;
     }
 }
