@@ -78,7 +78,6 @@ void drawHeart()
 
 int main()
 {
-    char modo = "L"; // "S" para Serial, "T" para Teclado Matricial
     // Inicializa entradas e saídas.
     stdio_init_all();
 
@@ -95,12 +94,9 @@ int main()
 
     while (true)
     {
-        char key[1];
-        if(modo == "T"){
-            key[0] = getKey();
-        } else if(modo == "S") {
-            key[0] = getchar_timeout_us(10000); // Lê a tecla pressionada a partir da entrada serial
-        }
+        char key = getKey();
+       // getchar_timeout_us(10000); // Lê a tecla pressionada a partir da entrada serial
+       // getKey(); // Lê a tecla pressionada a partir do teclado matricial
         if (key)
         {
             printf("Tecla pressionada: %c\n", key);
