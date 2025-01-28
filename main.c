@@ -104,7 +104,7 @@ int main()
     // inicializa o teclado
     initKeypad();
     // inicializa o buzzer
-     initBuzzer(BUZZER_PIN);
+     pwm_init_buzzer(BUZZER_PIN);
     // Desenha o coração
     drawHeart();
 
@@ -113,7 +113,7 @@ int main()
 
     while (true)
     {
-        int key = getchar_timeout_us(10000);
+        int key = getKey();
         // getchar_timeout_us(10000); // Lê a tecla pressionada a partir da entrada serial
         // getKey(); // Lê a tecla pressionada a partir do teclado matricial
         if (key)
@@ -137,10 +137,10 @@ int main()
             }
             else if (key >= '1' && key <= '9') // Garante que o caractere está entre '1' e '9'
             {
-                printf("Tocando buzzer\n");
-                playTone(1000, 500);
+                // printf("Tocando buzzer\n");
+                // play_tone(1000, 500);
                 printf("Tocando buzzer SEM PWM\n");
-                buzzer_tone(2000, 500);
+                // play_star_wars(BUZZER_PIN);
                 int animacao = key - '0'; // Converte o caractere para o número correspondente
                 printf("Exibindo a animação %d\n", animacao);
                 playAnimation(animacao); // Passa o número como parâmetro para a função
