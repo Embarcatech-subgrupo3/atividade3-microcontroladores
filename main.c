@@ -6,7 +6,7 @@
 #include "ws2818b.pio.h"
 #include "teclado.h"
 #include "exibir_animação.h"
-
+#include "buzzer.h"
 // Buffer de LEDs e variáveis PIO
 npLED_t leds[LED_COUNT];
 PIO np_pio;
@@ -52,22 +52,23 @@ void npWrite()
         pio_sm_put_blocking(np_pio, sm, leds[i].B);
     }
 }
-void tecla_B() {
-  for (uint i = 0; i < LED_COUNT; ++i) {
-    npSetLED(i, 0, 0, 255); // Azul com 100% de intensidade
-  }
-  npWrite(); // Atualiza os LEDs
+void tecla_B()
+{
+    for (uint i = 0; i < LED_COUNT; ++i)
+    {
+        npSetLED(i, 0, 0, 255); // Azul com 100% de intensidade
+    }
+    npWrite(); // Atualiza os LEDs
 }
 
-void tecla_D() {
-for (uint i = 0; i < LED_COUNT; ++i) {
-                npSetLED(i, 0, 128, 0); // Verde com 50% de intensidade
-            }
-  npWrite(); // Atualiza os LEDs
+void tecla_D()
+{
+    for (uint i = 0; i < LED_COUNT; ++i)
+    {
+        npSetLED(i, 0, 128, 0); // Verde com 50% de intensidade
+    }
+    npWrite(); // Atualiza os LEDs
 }
-
-
-
 
 int getIndex(int x, int y)
 { // função para obter o index do LED, convertendo a linha e coluna.
@@ -102,6 +103,8 @@ int main()
     npInit(LED_PIN);
     // inicializa o teclado
     initKeypad();
+    // inicializa o buzzer
+     initBuzzer(BUZZER_PIN);
     // Desenha o coração
     drawHeart();
 
@@ -110,7 +113,7 @@ int main()
 
     while (true)
     {
-        int key = getKey();
+        int key = getchar_timeout_us(10000);
         // getchar_timeout_us(10000); // Lê a tecla pressionada a partir da entrada serial
         // getKey(); // Lê a tecla pressionada a partir do teclado matricial
         if (key)
@@ -121,7 +124,8 @@ int main()
                 // Chama a função para limpar a matriz de LEDs
                 printf("Desligando todas os leds da matriz\n");
                 LimparLEDMatrix();
-            }else if (key == 'B')
+            }
+            else if (key == 'B')
             {
                 printf("Ligando todos os leds em azul com 100%% de intensidade\n");
                 tecla_B();
@@ -132,13 +136,17 @@ int main()
                 tecla_D();
             }
             else if (key >= '1' && key <= '9') // Garante que o caractere está entre '1' e '9'
-    {
-        int animacao = key - '0'; // Converte o caractere para o número correspondente
-        printf("Exibindo a animação %d\n", animacao);
-        playAnimation(animacao); // Passa o número como parâmetro para a função
-        sleep_ms(2000);
-        LimparLEDMatrix();
-    }
+            {
+                printf("Tocando buzzer\n");
+                playTone(1000, 500);
+                printf("Tocando buzzer SEM PWM\n");
+                buzzer_tone(2000, 500);
+                int animacao = key - '0'; // Converte o caractere para o número correspondente
+                printf("Exibindo a animação %d\n", animacao);
+                playAnimation(animacao); // Passa o número como parâmetro para a função
+                sleep_ms(2000);
+                LimparLEDMatrix();
+            }
         }
     }
 
