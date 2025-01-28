@@ -34,34 +34,59 @@ void displayFrame(const uint32_t *frame)
 // reproduz o frame com a musica
 void displayFrameMusic(int nAnimacao)
 {
-    int total_notes = SONG_OF_STORMS_NOTES_COUNT; // Total de notas
+    int total_notes;
     int frame = 0;
     int total_time_ms = 0; // Tempo total acumulado (em milissegundos)
-    if (nAnimacao == 1)
+    const uint *music_notes;
+    const uint *music_durations;
+    int frame_count;
+
+    // Escolhe a música e animação correta
+    switch (nAnimacao)
     {
-        for (int i = 0; i < total_notes; i++)
+    case 1: // Song of Storms + Animação 1
+        total_notes = SONG_OF_STORMS_NOTES_COUNT;
+        music_notes = song_of_storms_notes;
+        music_durations = song_of_storms_durations;
+        frame_count = FRAME_COUNT_1;
+        break;
+
+    case 3: // Super Mario Bros + Animação 3
+        total_notes = SUPER_MARIO_NOTES_COUNT;
+        music_notes = super_mario_notes;
+        music_durations = super_mario_durations;
+        frame_count = FRAME_COUNT_3;
+        break;
+
+    default:
+        printf("Animação inválida ou não associada a uma música.\n");
+        return;
+    }
+
+    // Reproduz a música e animação simultaneamente
+    for (int i = 0; i < total_notes; i++)
+    {
+        // Verifica se o tempo total excedeu 20 segundos (20.000 ms)
+        if (total_time_ms > MAX_MUSIC_TIME)
         {
-            // Verifica se o tempo total excedeu 20 segundos (20.000 ms)
-            if (total_time_ms > MAX_MUSIC_TIME)
-            {
-                printf("Tempo limite de 20 segundos atingido.\n");
-                i = total_notes;
-                break;
-            }
-
-            // Exibe o frame atual da animação
-
-            displayFrame(animacao_1[frame]);
-
-            // Toca a nota correspondente
-            buzzer_tone(song_of_storms_notes[i], song_of_storms_durations[i]);
-
-            // Soma o tempo de execução da nota ao tempo total
-            total_time_ms += song_of_storms_durations[i];
-
-            // Avança para o próximo frame (loop circular)
-            frame = (frame + 1) % FRAME_COUNT_1;
+            printf("Tempo limite de 20 segundos atingido.\n");
+            break;
         }
+
+        // Exibe o frame atual da animação
+        if (nAnimacao == 1)
+            displayFrame(animacao_1[frame]);
+        else if (nAnimacao == 3)
+            displayFrame(animacao_3[frame]);
+
+        // Toca a nota correspondente
+        buzzer_tone(music_notes[i], music_durations[i]);
+
+        // Soma o tempo de execução da nota ao tempo total
+        total_time_ms += music_durations[i];
+
+        // Avança para o próximo frame (loop circular)
+        frame = (frame + 1) % frame_count;
     }
 }
 
@@ -84,18 +109,17 @@ void playAnimation(int nAnimacao)
     case 3:
         for (int frame = 0; frame < FRAME_COUNT_3; ++frame)
         {
-            displayFrame(animacao_3[frame]); // Exibe o frame da animação 3
-            sleep_ms(1000);                  // Pausa entre os frames
+            displayFrameMusic(3); // Executa a animação e a música ao mesmo tempo
         }
         break;
     case 4:
-                for (int frame = 0; frame < FRAME_COUNT_4; ++frame)
+        for (int frame = 0; frame < FRAME_COUNT_4; ++frame)
         {
             displayFrame(animacao_4[frame]); // Exibe o frame atual
             sleep_ms(500);                   // Pausa entre frames
         }
         break;
-        
+
     default:
         break;
     }
