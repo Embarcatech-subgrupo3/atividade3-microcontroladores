@@ -136,6 +136,8 @@ int main()
         int animacao = key - '0'; // Converte o caractere para o número correspondente
         printf("Exibindo a animação %d\n", animacao);
         playAnimation(animacao); // Passa o número como parâmetro para a função
+        sleep_ms(2000);
+        LimparLEDMatrix();
     }
         }
     }
