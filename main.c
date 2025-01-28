@@ -7,6 +7,8 @@
 #include "teclado.h"
 #include "exibir_animação.h"
 #include "buzzer.h"
+// #include "pico/multicore.h"
+
 // Buffer de LEDs e variáveis PIO
 npLED_t leds[LED_COUNT];
 PIO np_pio;
@@ -15,6 +17,11 @@ uint sm;
 /**
  * Inicializa a máquina PIO para controle da matriz de LEDs.
  */
+
+// void core1_entry() {
+//     play_song_of_storms(); // Toca a música em um núcleo separado
+// }
+
 void npInit(uint pin)
 {
     uint offset = pio_add_program(pio0, &ws2818b_program);
@@ -104,12 +111,7 @@ int main()
     // inicializa o teclado
     initKeypad();
     // inicializa o buzzer
-     pwm_init_buzzer(BUZZER_PIN);
-    // Desenha o coração
-    drawHeart();
-
-    // Envia os dados do coração para os LEDs
-    npWrite();
+    pwm_init_buzzer(BUZZER_PIN);
 
     while (true)
     {
@@ -137,14 +139,16 @@ int main()
             }
             else if (key >= '1' && key <= '9') // Garante que o caractere está entre '1' e '9'
             {
-                // printf("Tocando buzzer\n");
-                // play_tone(1000, 500);
-                printf("Tocando buzzer SEM PWM\n");
-                // play_star_wars(BUZZER_PIN);
+                if (key == '4') { // Se a tecla 4 for pressionada
+                    printf("Executando animação e música simultaneamente\n");
+                    
+                    // multicore_launch_core1(core1_entry); // Inicia a música no Core 1
+
+                }
                 int animacao = key - '0'; // Converte o caractere para o número correspondente
                 printf("Exibindo a animação %d\n", animacao);
                 playAnimation(animacao); // Passa o número como parâmetro para a função
-                sleep_ms(2000);
+                sleep_ms(1000);
                 LimparLEDMatrix();
             }
         }
