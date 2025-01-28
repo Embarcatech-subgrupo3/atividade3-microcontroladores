@@ -49,7 +49,7 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(main main.c led_matrix_limpar.c teclado.c exibir_animacao.c)
+add_executable(main main.c led_matrix_limpar.c teclado.c exibir_animacao.c buzzer.c)
 
 pico_set_program_name(main "main")
 pico_set_program_version(main "0.1")
@@ -74,6 +74,7 @@ target_include_directories(main PRIVATE
 target_link_libraries(main 
         hardware_pio
         hardware_clocks
+        hardware_pwm
         )
 
 pico_add_extra_outputs(main)
