@@ -1,8 +1,10 @@
 #include "exibir_animação.h"
 #include "led_matrix_limpar.h"
 #include "buzzer.h"
+#include <stdio.h>
+#define MAX_MUSIC_TIME 20000 // Tempo maximo de reproducao da musica em ms
 
-int getIndex(int x, int y);   // Declaração explícita
+int getIndex(int x, int y); // Declaração explícita
 void npSetLED(int index, uint8_t r, uint8_t g, uint8_t b);
 void npWrite(void);
 void displayFrame(const uint32_t *frame)
@@ -32,18 +34,30 @@ void displayFrame(const uint32_t *frame)
 // reproduz o frame com a musica
 void displayFrameMusic(int nAnimacao)
 {
-    int total_notes = SONG_OF_STORMS_NOTES_COUNT;
+    int total_notes = SONG_OF_STORMS_NOTES_COUNT; // Total de notas
     int frame = 0;
+    int total_time_ms = 0; // Tempo total acumulado (em milissegundos)
     if (nAnimacao == 4)
     {
         for (int i = 0; i < total_notes; i++)
         {
+            // Verifica se o tempo total excedeu 20 segundos (20.000 ms)
+            if (total_time_ms > MAX_MUSIC_TIME)
+            {
+                printf("Tempo limite de 20 segundos atingido.\n");
+                i = total_notes;
+                break;
+            }
+
             // Exibe o frame atual da animação
 
             displayFrame(animacao_4[frame]);
 
             // Toca a nota correspondente
             buzzer_tone(song_of_storms_notes[i], song_of_storms_durations[i]);
+
+            // Soma o tempo de execução da nota ao tempo total
+            total_time_ms += song_of_storms_durations[i];
 
             // Avança para o próximo frame (loop circular)
             frame = (frame + 1) % FRAME_COUNT_4;
@@ -79,11 +93,7 @@ void playAnimation(int nAnimacao)
         }
         break;
     case 4:
-        for (int frame = 0; frame < FRAME_COUNT_4; ++frame)
-        {
-            displayFrameMusic(4); // Executa a animação e a música ao mesmo tempo
-            sleep_ms(500);        // Pausa entre os frames
-        }
+        displayFrameMusic(4); // Executa a animação e a música ao mesmo tempo
         break;
     default:
         break;
