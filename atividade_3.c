@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
-
+#include <string.h>
+#include "hardware/pio.h"
+#include "hardware/clocks.h"
+#include "pico/bootrom.h"
 // Definindo o teclado matricial
 #define LINHAS 4
 #define COLUNAS 4
@@ -39,6 +42,17 @@ void inicializar_teclado() {	for(int a=0; a< LINHAS;a++)
     }
 }
 
+void tecla_b(PIO pio, uint sm){
+    Matriz_leds_config matriz;
+    for(int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            matriz[i][j].red = 0.8;
+            matriz[i][j].green = 0.0;
+            matriz[i][j].blue = 0.0;
+        }
+    }
+    imprimir_desenho(matriz,pio,sm);
+}
 // Estrutura que define a cor dos LEDs (RGB)
 struct pixel_t {
     uint8_t G, R, B;
@@ -86,4 +100,31 @@ char ler_tecla() {
         gpio_put(linhas[i], 1); // Desativa a linha atual
     }
     return 0; // Nenhuma tecla pressionada
+}
+
+void padrao(char tecla) {
+    desliga();  // Desliga todos os LEDs
+    switch (tecla) {
+        case 'C':  // Se a tecla pressionada for 'C'
+            leds_vermelho();
+            break;
+        default:
+            break;
+    }
+    buffer();  // Atualiza os LEDs
+}
+
+int main() {
+    stdio_init_all();
+    inicializar_teclado();
+    npInit(MATRIZ_LEDS);
+
+    while (1) {
+        char tecla = ler_teclado();
+        if (tecla) { // Tecla para iniciar a animação
+            padrao(tecla);
+        }
+        sleep(200);
+    }
+    return 0;
 }
