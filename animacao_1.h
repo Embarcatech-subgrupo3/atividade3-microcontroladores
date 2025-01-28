@@ -1,12 +1,12 @@
 #include <stdint.h>
 
-#define FRAME_COUNT_4 10
+#define FRAME_COUNT_1 10
 #define NEW_PISKEL_FRAME_WIDTH 5
 #define NEW_PISKEL_FRAME_HEIGHT 5
 
 /* Piskel data for "New Piskel" */
 
-static const uint32_t animacao_4[FRAME_COUNT_4][25] = {
+static const uint32_t animacao_1[FRAME_COUNT_1][25] = {
 {
 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 
 0x00000000, 0xADD8E6, 0x00000000, 0x00000000, 0x00000000, 

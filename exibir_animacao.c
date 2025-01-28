@@ -37,7 +37,7 @@ void displayFrameMusic(int nAnimacao)
     int total_notes = SONG_OF_STORMS_NOTES_COUNT; // Total de notas
     int frame = 0;
     int total_time_ms = 0; // Tempo total acumulado (em milissegundos)
-    if (nAnimacao == 4)
+    if (nAnimacao == 1)
     {
         for (int i = 0; i < total_notes; i++)
         {
@@ -51,7 +51,7 @@ void displayFrameMusic(int nAnimacao)
 
             // Exibe o frame atual da animação
 
-            displayFrame(animacao_4[frame]);
+            displayFrame(animacao_1[frame]);
 
             // Toca a nota correspondente
             buzzer_tone(song_of_storms_notes[i], song_of_storms_durations[i]);
@@ -60,7 +60,7 @@ void displayFrameMusic(int nAnimacao)
             total_time_ms += song_of_storms_durations[i];
 
             // Avança para o próximo frame (loop circular)
-            frame = (frame + 1) % FRAME_COUNT_4;
+            frame = (frame + 1) % FRAME_COUNT_1;
         }
     }
 }
@@ -72,11 +72,7 @@ void playAnimation(int nAnimacao)
     switch (nAnimacao)
     {
     case 1:
-        for (int frame = 0; frame < FRAME_COUNT_1; ++frame)
-        {
-            displayFrame(animacao_1[frame]); // Exibe o frame atual
-            sleep_ms(500);                   // Pausa entre frames
-        }
+        displayFrameMusic(1); // Executa a animação e a música ao mesmo tempo
         break;
     case 2:
         for (int frame = 0; frame < FRAME_COUNT_2; ++frame)
@@ -93,8 +89,13 @@ void playAnimation(int nAnimacao)
         }
         break;
     case 4:
-        displayFrameMusic(4); // Executa a animação e a música ao mesmo tempo
+                for (int frame = 0; frame < FRAME_COUNT_4; ++frame)
+        {
+            displayFrame(animacao_4[frame]); // Exibe o frame atual
+            sleep_ms(500);                   // Pausa entre frames
+        }
         break;
+        
     default:
         break;
     }

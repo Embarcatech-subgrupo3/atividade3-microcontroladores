@@ -1,10 +1,10 @@
 #include <stdint.h>
 
-#define FRAME_COUNT_1 10
+#define FRAME_COUNT_4 10
 #define FRAME_WIDTH 5
 #define FRAME_HEIGHT 5
 
-static const uint32_t animacao_1[FRAME_COUNT_1][FRAME_WIDTH * FRAME_HEIGHT] = {
+static const uint32_t animacao_4[FRAME_COUNT_4][FRAME_WIDTH * FRAME_HEIGHT] = {
 {
 0xff219515, 0x006400, 0x006400, 0x006400, 0x00000000, 
 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 
