@@ -1,0 +1,336 @@
+#include <stdio.h>
+#include "pico/stdlib.h"
+#include "hardware/pio.h"
+#include "hardware/clocks.h"
+#include "ws2818b.pio.h"
+
+// Definição do número de LEDs e pino.
+#define LED_COUNT 25
+#define LED_PIN 7
+#define BUZZER_PIN 21  // Pino para o buzzer
+
+#define FRAME_COUNT 5
+#define FRAME_WIDTH 5
+#define FRAME_HEIGHT 5
+// Dados das imagens (frames da animação) em formato RGB
+uint8_t image[FRAME_COUNT][FRAME_HEIGHT][FRAME_WIDTH][3] = {
+    {
+        {{0, 0, 0}, {0, 0, 255}, {255, 255, 255}, {0, 0, 255}, {0, 0, 0}},
+        {{255, 255, 255}, {0, 0, 255}, {0, 0, 255}, {0, 0, 255}, {255, 255, 255}},
+        {{0, 0, 0}, {249, 249, 249}, {249, 249, 249}, {249, 249, 249}, {0, 0, 0}},
+        {{0, 0, 0}, {255, 0, 0}, {255, 0, 0}, {255, 0, 0}, {255, 0, 0}},
+        {{0, 0, 0}, {249, 249, 249}, {255, 0, 0}, {255, 0, 0}, {0, 0, 0}}
+    },
+    {
+        {{0, 0, 0}, {255, 0, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}},
+        {{255, 255, 255}, {255, 255, 255}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}},
+        {{0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {255, 255, 255}, {255, 255, 255}},
+        {{0, 255, 0}, {0, 255, 0}, {0, 0, 0}, {0, 255, 0}, {0, 0, 0}},
+        {{0, 0, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}},
+    },
+    {
+        {{0, 0, 0}, {0, 0, 255}, {0, 0, 0}, {0, 0, 255}, {0, 0, 0}},
+        {{255, 255, 255}, {0, 0, 255}, {0, 0, 255}, {0, 0, 255}, {255, 255, 255}},
+        {{0, 0, 0}, {249, 249, 249}, {249, 249, 249}, {249, 249, 249}, {0, 0, 0}},
+        {{0, 0, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}},
+        {{0, 0, 0}, {255, 255, 255}, {0, 255, 0}, {0, 255, 0}, {0, 0, 0}}
+    },
+    {
+        {{0, 0, 0}, {0, 0, 255}, {255, 255, 255}, {0, 0, 255}, {0, 0, 0}},
+        {{213, 186, 152}, {0, 0, 255}, {255, 255, 255}, {0, 0, 255}, {213, 186, 152}},
+        {{0, 0, 0}, {213, 186, 152}, {213, 186, 152}, {213, 186, 152}, {0, 0, 0}},
+        {{255, 0, 0}, {255, 255, 255}, {255, 255, 255}, {255, 0, 0}, {255, 0, 0}},
+        {{0, 0, 0}, {255, 0, 0}, {255, 0, 0}, {255, 0, 0}, {0, 0, 0}}
+    },
+    {
+        {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}},
+        {{255, 255, 255}, {0, 0, 0}, {255, 255, 255}, {0, 0, 0}, {255, 255, 255}},
+        {{0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}},
+        {{255, 255, 255}, {0, 255, 0}, {255, 255, 255}, {0, 255, 0}, {255, 255, 255}},
+        {{0, 255, 0}, {255, 255, 255}, {0, 255, 0}, {255, 255, 255}, {0, 255, 0}}
+    }
+};
+// Definindo a melodia
+#define NOTE_A7  3520
+#define NOTE_F7  2794
+#define NOTE_E7  2637
+#define NOTE_C7  2093
+#define NOTE_G7  3136
+#define NOTE_G6  1568
+#define NOTE_E6  1319
+#define NOTE_A6  1760
+#define NOTE_B6  1976
+#define NOTE_AS6 1865
+#define NOTE_D7  2349
+#define NOTE_B6  1976
+#define NOTE_C5  523
+#define NOTE_G4  392
+#define NOTE_E4  330
+#define NOTE_A4  440
+#define NOTE_B4  494
+#define NOTE_GS4 415
+#define NOTE_AS4 466
+#define NOTE_D4  294
+#define REST      0
+
+
+float melody[] = {
+    NOTE_E7, NOTE_E7, 0, NOTE_E7,
+    0, NOTE_C7, NOTE_E7, 0,
+    NOTE_G7, 0, 0, 0,
+    NOTE_G6, 0, 0, 0,
+
+    NOTE_C7, 0, 0, NOTE_G6,
+    0, 0, NOTE_E6, 0,
+    0, NOTE_A6, 0, NOTE_B6,
+    0, NOTE_AS6, NOTE_A6, 0,
+
+    NOTE_G6, NOTE_E7, NOTE_G7,
+    NOTE_A7, 0, NOTE_F7, NOTE_G7,
+    0, NOTE_E7, 0, NOTE_C7,
+    NOTE_D7, NOTE_B6, 0, 0,
+
+    NOTE_C7, 0, 0, NOTE_G6,
+    0, 0, NOTE_E6, 0,
+    0, NOTE_A6, 0, NOTE_B6,
+    0, NOTE_AS6, NOTE_A6, 0,
+
+    NOTE_G6, NOTE_E7, NOTE_G7,
+    NOTE_A7, 0, NOTE_F7, NOTE_G7,
+    0, NOTE_E7, 0, NOTE_C7,
+    NOTE_D7, NOTE_B6, 0, 0,
+
+    NOTE_E7, NOTE_E7, 0, NOTE_E7,
+    0, NOTE_C7, NOTE_E7, 0,
+    NOTE_G7, 0, 0, 0,
+    NOTE_G6, 0, 0, 0,
+
+    NOTE_C7, 0, 0, NOTE_G6,
+    0, 0, NOTE_E6, 0,
+    0, NOTE_A6, 0, NOTE_B6,
+    0, NOTE_AS6, NOTE_A6, 0,
+
+    NOTE_G6, NOTE_E7, NOTE_G7,
+    NOTE_A7, 0, NOTE_F7, NOTE_G7,
+    0, NOTE_E7, 0, NOTE_C7,
+    NOTE_D7, NOTE_B6, 0, 0,
+
+
+};
+
+int noteDurations[] = {
+    12, 12, 12, 12,
+    12, 12, 12, 12,
+    12, 12, 12, 12,
+    12, 12, 12, 12,
+
+    12, 12, 12, 12,
+    12, 12, 12, 12,
+    12, 12, 12, 12,
+    12, 12, 12, 12,
+
+    9, 9, 9,
+    12, 12, 12, 12,
+    12, 12, 12, 12,
+    12, 12, 12, 12,
+
+    12, 12, 12, 12,
+    12, 12, 12, 12,
+    12, 12, 12, 12,
+    12, 12, 12, 12,
+
+    9, 9, 9,
+    12, 12, 12, 12,
+    12, 12, 12, 12,
+    12, 12, 12, 12,
+
+    12, 12, 12, 12,
+    12, 12, 12, 12,
+    12, 12, 12, 12,
+    12, 12, 12, 12,
+
+    12, 12, 12, 12,
+    12, 12, 12, 12,
+    12, 12, 12, 12,
+    12, 12, 12, 12,
+
+    9, 9, 9,
+    12, 12, 12, 12,
+    12, 12, 12, 12,
+    12, 12, 12, 12,
+
+};
+
+// Estrutura para representar um pixel RGB
+struct pixel_t {
+    uint8_t R, G, B;
+};
+typedef struct pixel_t pixel_t;
+pixel_t leds[LED_COUNT];
+
+PIO np_pio;
+uint sm;
+
+// Função para inicializar a matriz de LEDs
+void npInit(uint pin);
+
+// Função para definir a cor de um LED
+void npSetLED(uint index, uint8_t r, uint8_t g, uint8_t b);
+// Função para atualizar os LEDs
+void npWrite();
+// Função para acender os LEDs de acordo com o frame, tocando uma nota a cada LED aceso
+// Declaração correta da função
+void npDisplayFrameWithSound(const uint8_t frame[FRAME_HEIGHT][FRAME_WIDTH][3], int* melodyIndex);
+// Função para tocar uma nota musical no buzzer
+void playTone(uint frequency, uint duration);
+// Função para tocar a animação com som
+void npPlayAnimation();
+
+// Função para inicializar a matriz de LEDs
+void npInit(uint pin) {
+    uint offset = pio_add_program(pio0, &ws2818b_program);
+    np_pio = pio0;
+    sm = pio_claim_unused_sm(np_pio, false);
+    if (sm < 0) {
+        np_pio = pio1;
+        sm = pio_claim_unused_sm(np_pio, true);
+    }
+    ws2818b_program_init(np_pio, sm, offset, pin, 800000.f);
+    for (uint i = 0; i < LED_COUNT; i++) {
+        leds[i].R = 0;
+        leds[i].G = 0;
+        leds[i].B = 0;
+    }
+    gpio_init(BUZZER_PIN);
+    gpio_set_dir(BUZZER_PIN, GPIO_OUT);
+}
+
+// Função para atualizar os LEDs
+void npWrite() {
+    for (uint i = 0; i < LED_COUNT; i++) {
+        pio_sm_put_blocking(np_pio, sm, leds[i].G);
+        pio_sm_put_blocking(np_pio, sm, leds[i].R);
+        pio_sm_put_blocking(np_pio, sm, leds[i].B);
+    }
+    sleep_us(100);
+}
+
+// Função para tocar uma nota musical no buzzer
+#define TEMPO_BASE 250000  // Duração da semínima em ms 
+
+void playTone(uint frequency, uint duration) {
+    uint Duration = TEMPO_BASE / duration;  // Calcula a duração real da nota
+    uint delay = 400000 / frequency;           // Calcula o tempo de delay baseado na frequência
+    uint cycles = frequency * Duration / 900;  // Número de ciclos para a duração em ms
+
+    for (uint i = 0; i < cycles; i++) {
+        gpio_put(BUZZER_PIN, 1);  // Liga o buzzer
+        sleep_us(delay);
+        gpio_put(BUZZER_PIN, 0);  // Desliga o buzzer
+        sleep_us(delay);
+    }
+}
+
+
+// Função para acender os LEDs de acordo com o frame, tocando uma nota a cada LED aceso
+void npDisplayFrameWithSound(const uint8_t frame[5][5][3], int* melodyIndex) {
+    int index = 0;
+    for (uint i = 0; i < 5; i++) {
+        for (uint j = 0; j < 5; j++) {
+            leds[index].R = frame[i][j][0];
+            leds[index].G = frame[i][j][1];
+            leds[index].B = frame[i][j][2];
+            playTone(melody[*melodyIndex], noteDurations[*melodyIndex] * 100);
+            (*melodyIndex)++;
+            npWrite();
+            index++;
+        }
+    }
+}
+
+// Função para tocar a animação com som
+void npPlayAnimation() {
+    int melodyIndex = 0;
+    for (uint frame = 0; frame < FRAME_COUNT; frame++) {
+        npDisplayFrameWithSound(image[frame], &melodyIndex);
+        sleep_ms(200);  // Tempo entre frames
+    }
+}
+
+typedef pixel_t npLED_t; // Mudança de nome de "struct pixel_t" para "npLED_t" por clareza.
+
+// Declaração do buffer de pixels que formam a matriz.
+npLED_t leds[LED_COUNT];
+
+// Variáveis para uso da máquina PIO.
+PIO np_pio;
+uint sm;
+
+// Definição dos pinos do teclado matricial
+const uint8_t ROWS[] = {18, 19, 20, 4};  // Linhas (GPIO 18, 19, 20,4)
+const uint8_t COLS[] = {16, 17, 9, 8}; // Colunas (GPIO 16, 17, 9, 8)
+
+// Mapeamento das teclas do teclado 4x4
+char keys[4][4] = {
+    {'1', '2', '3', 'A'},
+    {'4', '5', '6', 'B'},
+    {'7', '8', '9', 'C'},
+    {'*', '0', '#', 'D'}
+};
+
+// Função para atribuir uma cor RGB a um LED específico
+void npSetLED(const uint index, const uint8_t r, const uint8_t g, const uint8_t b) {
+  leds[index].R = r;
+  leds[index].G = g;
+  leds[index].B = b;
+}
+// Função para ler a tecla pressionada no teclado matricial
+char getKey() {
+  for (int row = 0; row < 4; row++) {
+    gpio_put(ROWS[row], 0); // Define a linha como LOW
+    for (int col = 0; col < 4; col++) {
+      if (!gpio_get(COLS[col])) {
+        // Espera até que a tecla seja liberada
+        while (!gpio_get(COLS[col])) {}
+        return keys[row][col]; // Retorna a tecla pressionada
+      }
+    }
+    gpio_put(ROWS[row], 1); // Define a linha como HIGH
+  }
+  return 0; // Nenhuma tecla pressionada
+}
+
+int main() {
+  stdio_init_all();
+
+  // Configura os pinos das linhas e colunas do teclado
+  for (int i = 0; i < 4; i++) {
+    gpio_init(ROWS[i]);
+    gpio_set_dir(ROWS[i], GPIO_OUT);
+    gpio_put(ROWS[i], 1); // Inicializa as linhas como HIGH
+
+    gpio_init(COLS[i]);
+    gpio_set_dir(COLS[i], GPIO_IN);
+    gpio_pull_up(COLS[i]); // Ativa o pull-up nas colunas
+  }
+
+  // Configura o pino do buzzer
+  gpio_init(BUZZER_PIN);
+  gpio_set_dir(BUZZER_PIN, GPIO_OUT);
+  gpio_put(BUZZER_PIN, 0); // Inicializa o buzzer desligado
+
+  // Inicializa a matriz de LEDs
+  npInit(LED_PIN);
+
+  while (true) {
+    char key = getKey(); // Lê a tecla pressionada
+
+    if (key == '3') {
+      npPlayAnimation();
+    }
+
+    sleep_ms(100); // Delay para evitar leituras rápidas demais
+  }
+
+  return 0;
+}
