@@ -45,6 +45,13 @@ void playAnimation(int nAnimacao)
             sleep_ms(1000);                      // Pausa entre os frames
         }
         break;
+    case 3:
+        for (int frame = 0; frame < FRAME_COUNT_3; ++frame)
+        {
+            displayFrame(animacao_3[frame]); // Exibe o frame da animação 3
+            sleep_ms(1000);                      // Pausa entre os frames
+        }
+        break;
     default:
         printf("Animação inválida: %d\n", nAnimacao);
         break;
