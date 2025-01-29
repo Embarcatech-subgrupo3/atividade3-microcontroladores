@@ -10,8 +10,13 @@ O sistema responde às entradas do teclado matricial, gerando animações ou con
 
 ### **Funcionalidades**  
 1. **Animações (0-9)**:  
-   - Cada tecla numérica (0 a 9) executa uma animação específica na matriz de LEDs.  
-   - Cada animação possui pelo menos 5 frames e é exibida com fluidez.  
+   - Cada tecla numérica (1 a 5) executa uma animação específica na matriz de LEDs.  
+   - Cada animação possui pelo menos 5 frames e é exibida com fluidez.
+   - Tecla 1 🔊
+   - Tecla 2
+   - Tecla 3 🔊
+   - Tecla 4
+   - Tecla 5
 
 2. **Comandos Especiais**:  
    - **Tecla A**: Desliga todos os LEDs.  
@@ -51,16 +56,19 @@ Douglas Ramos de Almeida<br>
 ## **Instruções de Uso**  
 
 ### **1. Importar o projeto**
- - . Abra o vscode ou outro editor de código compatível 
- - . verifique se tem instalado a extensão Raspberry pi pico
- - . Clone este repositório, e importe os arquivos para o editor
+1. Abra o **VS Code** ou outro editor compatível.
+2. Certifique-se de ter a **extensão Raspberry Pico PI** instalada.
+3. Importe os arquivos do projeto para o editor.
 
-### **2. compilar o projeto**
- - . Verifique se todas as dependências do projeto estão configuradas corretamente.
- - . Compile o projeto para gerar a build, configurando o ambiente de acordo com a Raspberry Pi Pico.
+---
+
+### **2. Compilar o projeto**
+1. Compile o projeto para gerar a build, configurando o ambiente de acordo com a Raspberry Pi Pico.
+2. Certifique-se de que todas as dependências estão configuradas corretamente.
+
+---
 
 ### **3. Executar a simulação**
- - . Utiliza a extensão Wokwi e abra o arquivo diagrama.json.
- - . Inicie a simulação para visualizar a funcionalidade do circuito e a funcionalidade do programa.
-
+1. Abra o arquivo `diagram.json` utilizando a extensão **Wokwi**.
+2. Inicie a simulação para visualizar o funcionamento do circuito e testar as funcionalidades.
 
