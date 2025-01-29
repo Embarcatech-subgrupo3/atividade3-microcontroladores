@@ -9,9 +9,10 @@ O objetivo é gerar animações em uma matriz de LEDs 5x5 utilizando o microcont
 O sistema responde às entradas do teclado matricial, gerando animações ou configurando a matriz de LEDs de acordo com as teclas pressionadas.  
 
 ### **Funcionalidades**  
-1. **Animações (0-9)**:  
-   - Cada tecla numérica (0 a 9) executa uma animação específica na matriz de LEDs.  
-   - Cada animação possui pelo menos 5 frames e é exibida com fluidez.  
+1. **Animações (1-8)**:  
+   - Cada tecla numérica (1 a 8) executa uma animação específica na matriz de LEDs.  
+   - Cada animação possui pelo menos 5 frames e é exibida com fluidez.
+  
 
 2. **Comandos Especiais**:  
    - **Tecla A**: Desliga todos os LEDs.  
@@ -19,16 +20,13 @@ O sistema responde às entradas do teclado matricial, gerando animações ou con
    - **Tecla C**: Liga todos os LEDs na cor vermelha com 80% de intensidade.  
    - **Tecla D**: Liga todos os LEDs na cor verde com 50% de intensidade.  
    - **Tecla #**: Liga todos os LEDs na cor branca com 20% de intensidade.  
-   - **Tecla \***: Reinicia o microcontrolador para o modo de gravação.  
 
-3. **Especificações Opcionais**:  
-   - Geração de sinal sonoro com o buzzer para uma das animações.  
 
 ## **Componentes Utilizados**  
 - **Microcontrolador**: Raspberry Pi Pico W.  
 - **Matriz de LEDs**: WS2812 (5x5).  
 - **Teclado Matricial**: 4x4.  
-- **Buzzer Passivo Eletromagnético**: MLT-8530 SMD 3.6V (opcional).  
+- **Buzzer Passivo Eletromagnético**: MLT-8530 SMD 3.6V.
 
 ## **Requisitos do Ambiente**  
 - **Software**:  
@@ -45,23 +43,40 @@ Líder: Luiz Gustavo do Valle Vieira
 Desenvolvedores:<br>
 Lana Ramos Gomes<br>
 Matheus Félix Dias<br>
-Miquele GomesNogueira Santana<br>
 Paulo Henrique de Farias Martins<br>
 Douglas Ramos de Almeida<br>
 
 ## **Instruções de Uso**  
 
 ### **1. Importar o projeto**
- - . Abra o vscode ou outro editor de código compatível 
- - . verifique se tem instalado a extensão Raspberry pi pico
- - . Clone este repositório, e importe os arquivos para o editor
+1. Abra o **VS Code** ou outro editor compatível.
+2. Certifique-se de ter a **extensão Raspberry Pico PI** instalada.
+3. Importe os arquivos do projeto para o editor.
 
-### **2. compilar o projeto**
- - . Verifique se todas as dependências do projeto estão configuradas corretamente.
- - . Compile o projeto para gerar a build, configurando o ambiente de acordo com a Raspberry Pi Pico.
+---
+
+### **2. Compilar o projeto**
+1. Compile o projeto para gerar a build, configurando o ambiente de acordo com a Raspberry Pi Pico.
+2. Certifique-se de que todas as dependências estão configuradas corretamente.
+
+---
 
 ### **3. Executar a simulação**
- - . Utiliza a extensão Wokwi e abra o arquivo diagrama.json.
- - . Inicie a simulação para visualizar a funcionalidade do circuito e a funcionalidade do programa.
+1. Abra o arquivo `diagram.json` utilizando a extensão **Wokwi**.
+2. Inicie a simulação para visualizar o funcionamento do circuito e testar as funcionalidades.
 
+   #Teclas do teclado matricial com funcionalidades:
+   - **Tecla A**: Desliga todos os LEDs.  
+   - **Tecla B**: Liga todos os LEDs na cor azul com 100% de intensidade.  
+   - **Tecla C**: Liga todos os LEDs na cor vermelha com 80% de intensidade.  
+   - **Tecla D**: Liga todos os LEDs na cor verde com 50% de intensidade.  
+   - **Tecla #**: Liga todos os LEDs na cor branca com 20% de intensidade.
+   - Tecla 1 🔊 (com musica)
+   - Tecla 2
+   - Tecla 3 🔊 (com musica)
+   - Tecla 4
+   - Tecla 5
+   - Tecla 6
+   - Tecla 7
+   - Tecla 8
 
