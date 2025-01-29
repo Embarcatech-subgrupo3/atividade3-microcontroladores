@@ -86,4 +86,9 @@ Douglas Ramos de Almeida<br>
 
 Confira uma demonstração prática do projeto no YouTube:
 
+[![Demonstração do Projeto](https://img.youtube.com/vi/jkjOIlceyRM/0.jpg)](https://www.youtube.com/watch?v=jkjOIlceyRM)
+
+Clique na imagem ou no link abaixo para assistir:
 https://www.youtube.com/watch?v=jkjOIlceyRM
+
+---
