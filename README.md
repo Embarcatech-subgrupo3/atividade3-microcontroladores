@@ -66,17 +66,17 @@ Douglas Ramos de Almeida<br>
 2. Inicie a simulação para visualizar o funcionamento do circuito e testar as funcionalidades.
 
    #Teclas do teclado matricial com funcionalidades:
-   - **Tecla A**: Desliga todos os LEDs.  
-   - **Tecla B**: Liga todos os LEDs na cor azul com 100% de intensidade.  
-   - **Tecla C**: Liga todos os LEDs na cor vermelha com 80% de intensidade.  
-   - **Tecla D**: Liga todos os LEDs na cor verde com 50% de intensidade.  
-   - **Tecla #**: Liga todos os LEDs na cor branca com 20% de intensidade.
-   - Tecla 1 🔊 (Animação com musica)
-   - Tecla 2 🔇 (Animação sem musica)
-   - Tecla 3 🔊 (Animação com musica)
-   - Tecla 4 🔇 (Animação sem musica)
-   - Tecla 5 🔇 (Animação sem musica)
-   - Tecla 6 🔇 (Animação sem musica)
-   - Tecla 7 🔇 (Animação sem musica)
-   - Tecla 8 🔇 (Animação sem musica)
+   - **Tecla A**: Desliga todos os LEDs.  (Responsável Paulo Henrique).
+   - **Tecla B**: Liga todos os LEDs na cor azul com 100% de intensidade.  (Responsável Luiz Gustavo).
+   - **Tecla C**: Liga todos os LEDs na cor vermelha com 80% de intensidade. (Responsável Lana Ramos).
+   - **Tecla D**: Liga todos os LEDs na cor verde com 50% de intensidade.  (Responsável Luiz Gustavo).
+   - **Tecla #**: Liga todos os LEDs na cor branca com 20% de intensidade. (Responsável Douglas Ramos).
+   - Tecla 1 🔊 (Animação com musica) (Responsável Paulo Henrique).
+   - Tecla 2 🔇 (Animação sem musica) (Responsável Lana Ramos).
+   - Tecla 3 🔊 (Animação com musica) (Responsável Luiz Gustavo).
+   - Tecla 4 🔇 (Animação sem musica) (Responsável Paulo Henrique).
+   - Tecla 5 🔇 (Animação sem musica) (Responsável Paulo Henrique).
+   - Tecla 6 🔇 (Animação sem musica) (Responsável Luiz Gustavo).
+   - Tecla 7 🔇 (Animação sem musica) (Responsável Paulo Henrique).
+   - Tecla 8 🔇 (Animação sem musica) (Responsável Luiz Gustavo).
 
