@@ -71,12 +71,12 @@ Douglas Ramos de Almeida<br>
    - **Tecla C**: Liga todos os LEDs na cor vermelha com 80% de intensidade.  
    - **Tecla D**: Liga todos os LEDs na cor verde com 50% de intensidade.  
    - **Tecla #**: Liga todos os LEDs na cor branca com 20% de intensidade.
-   - Tecla 1 🔊 (com musica)
-   - Tecla 2
-   - Tecla 3 🔊 (com musica)
-   - Tecla 4
-   - Tecla 5
-   - Tecla 6
-   - Tecla 7
-   - Tecla 8
+   - Tecla 1 🔊 (Animação com musica)
+   - Tecla 2 🔇 (Animação sem musica)
+   - Tecla 3 🔊 (Animação com musica)
+   - Tecla 4 🔇 (Animação sem musica)
+   - Tecla 5 🔇 (Animação sem musica)
+   - Tecla 6 🔇 (Animação sem musica)
+   - Tecla 7 🔇 (Animação sem musica)
+   - Tecla 8 🔇 (Animação sem musica)
 
