@@ -107,10 +107,8 @@ void playAnimation(int nAnimacao)
         }
         break;
     case 3:
-        for (int frame = 0; frame < FRAME_COUNT_3; ++frame)
-        {
             displayFrameMusic(3); // Executa a animação e a música ao mesmo tempo
-        }
+
         break;
     case 4:
         for (int frame = 0; frame < FRAME_COUNT_4; ++frame)
