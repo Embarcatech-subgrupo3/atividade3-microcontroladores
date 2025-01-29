@@ -82,11 +82,15 @@ Douglas Ramos de Almeida<br>
 
 ---
 
-## Demonstração em Vídeo
+## 📽 Demonstração
 
-Confira uma demonstração prática do projeto no YouTube:
+### 🖥️ Explicação com Simulador  
+[![Explicação com Simulador](https://img.youtube.com/vi/jkjOIlceyRM/0.jpg)](https://www.youtube.com/watch?v=jkjOIlceyRM)  
+🔗 [Assistir no YouTube](https://www.youtube.com/watch?v=jkjOIlceyRM)  
 
-[![Demonstração do Projeto](https://img.youtube.com/vi/jkjOIlceyRM/0.jpg)](https://www.youtube.com/watch?v=jkjOIlceyRM)
+### 🔧 Demonstração na Placa  
+[![Demonstração na Placa](https://img.youtube.com/vi/4joR8_YmUYE/0.jpg)](https://youtu.be/4joR8_YmUYE)  
+🔗 [Assistir no YouTube](https://youtu.be/4joR8_YmUYE)  
 
 Clique na imagem ou no link abaixo para assistir:
 https://www.youtube.com/watch?v=jkjOIlceyRM
