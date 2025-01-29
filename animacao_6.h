@@ -1,9 +1,9 @@
-#define FRAME_COUNT_2 5
+#define FRAME_COUNT_6 5
 #define FRAME_WIDTH 5
 #define FRAME_HEIGHT 5
 
 
-static const uint32_t animacao_6[FRAME_COUNT_2][25] = {
+static const uint32_t animacao_6[FRAME_COUNT_6][25] = {
 {
 0xffffffff, 0xff000000, 0xffffffff, 0xff000000, 0xffffffff,
 0xff000000, 0xff00ff00, 0xffffffff, 0xff00ff00, 0xff000000,

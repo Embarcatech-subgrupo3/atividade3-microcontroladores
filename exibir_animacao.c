@@ -119,6 +119,34 @@ void playAnimation(int nAnimacao)
             sleep_ms(500);                   // Pausa entre frames
         }
         break;
+    case 5:
+        for (int frame = 0; frame < FRAME_COUNT_5; ++frame)
+        {
+            displayFrame(animacao_5[frame]); // Exibe o frame atual
+            sleep_ms(750);                   // Pausa entre frames
+        }
+        break;
+    case 6:
+        for (int frame = 0; frame < FRAME_COUNT_6; ++frame)
+        {
+            displayFrame(animacao_6[frame]); // Exibe o frame atual
+            sleep_ms(750);                   // Pausa entre frames
+        }
+        break;
+        case 7:
+        for (int frame = 0; frame < FRAME_COUNT_7; ++frame)
+        {
+            displayFrame(animacao_7[frame]); // Exibe o frame atual
+            sleep_ms(750);                   // Pausa entre frames
+        }
+        break;
+        case 8:
+        for (int frame = 0; frame < FRAME_COUNT_8; ++frame)
+        {
+            displayFrame(animacao_8[frame]); // Exibe o frame atual
+            sleep_ms(750);                   // Pausa entre frames
+        }
+        break;
 
     default:
         break;
