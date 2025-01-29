@@ -80,3 +80,10 @@ Douglas Ramos de Almeida<br>
    - Tecla 7 🔇 (Animação sem musica) (Responsável Paulo Henrique).
    - Tecla 8 🔇 (Animação sem musica) (Responsável Luiz Gustavo).
 
+---
+
+## Demonstração em Vídeo
+
+Confira uma demonstração prática do projeto no YouTube:
+
+https://www.youtube.com/watch?v=jkjOIlceyRM
