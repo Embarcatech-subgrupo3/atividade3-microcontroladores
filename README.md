@@ -45,7 +45,6 @@ Líder: Luiz Gustavo do Valle Vieira
 Desenvolvedores:<br>
 Lana Ramos Gomes<br>
 Matheus Félix Dias<br>
-Miquele GomesNogueira Santana<br>
 Paulo Henrique de Farias Martins<br>
 Douglas Ramos de Almeida<br>
 
